@@ -1,5 +1,19 @@
 {
-    "require": {},
+    "name": "ndj888/com_jjcbs_tool",
+    "description": "Publish package about jjcbs use some class file on working!",
+    "keywords": ["mytool","com_jjcbs"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "longbob",
+            "email": "jjcbs@vip.qq.com",
+            "homepage": "http://www.yutou88.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.0"
+    },
     "require-dev" : {
         "clue/phar-composer" : "v1.0.0"
     }
