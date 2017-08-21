@@ -6,5 +6,3 @@ The Project release version v0.1.
 
 ### use composer
 composer require ndj888/com_jjcbs_tool
-
-## 测试配置composer 自动推送钩子
