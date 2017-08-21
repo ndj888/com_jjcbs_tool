@@ -1,0 +1,12 @@
+{
+    "require": {
+
+    },
+    "require-dev": {
+    },
+    "autoload" : {
+        "psr-4" : {
+            "com_jjcbs\\" : "com_jjcbs/"
+        }
+    }
+}

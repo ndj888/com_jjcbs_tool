@@ -1,0 +1,6 @@
+{
+    "require": {},
+    "require-dev" : {
+        "clue/phar-composer" : "v1.0.0"
+    }
+}
