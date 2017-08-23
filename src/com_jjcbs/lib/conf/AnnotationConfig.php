@@ -6,10 +6,9 @@
  * Time: 10:22
  */
 
-namespace com_jjcbs\lib\annotation;
+namespace com_jjcbs\lib\conf;
+use com_jjcbs\lib\Conf;
 
-
-use ext\lib\Conf;
 
 /**
  * the annotation config file

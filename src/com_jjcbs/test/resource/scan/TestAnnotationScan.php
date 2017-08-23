@@ -10,11 +10,20 @@ namespace com_jjcbs\test\resource\scan;
 
 
 /**
- * @@Service
+ * @@com\jjcbs\lib\annoation\Service
  * Class TestAnnotationScan
  * @package com_jjcbs\test\resource\scan
  */
 class TestAnnotationScan
 {
-
+    /**
+     * @@com\jjcbs\lib\annotation\OutPutFormat(type="json")
+     * @return array
+     */
+    public function getArr(){
+        return [
+            'hellow',
+            'json'
+        ];
+    }
 }

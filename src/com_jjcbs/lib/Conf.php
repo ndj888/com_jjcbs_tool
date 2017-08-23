@@ -6,7 +6,7 @@
  * Time: 11:01
  */
 
-namespace ext\lib;
+namespace com_jjcbs\lib;
 
 /**
  * 配置信息基类

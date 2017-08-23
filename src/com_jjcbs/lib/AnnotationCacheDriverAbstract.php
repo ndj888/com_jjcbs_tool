@@ -10,6 +10,7 @@ namespace com_jjcbs\lib;
 
 
 use com_jjcbs\exceptions\AnnotationException;
+use com_jjcbs\fun\Main;
 use com_jjcbs\interfaces\AnnotationCacheInterface;
 use com_jjcbs\service\AnnotationConfigServiceImpl;
 
@@ -28,12 +29,12 @@ abstract class AnnotationCacheDriverAbstract implements AnnotationCacheInterface
      * return all files list
      * example [file1,file2,file3]
      * @throws AnnotationException
-     * @return array
+     * @return void
      */
-    protected function scanNamespacesFiles() : array {
-        $psrList = $this->getComposePsrNamespaceList();
+    public function scanNamespacesFiles() {
+        $psrList = $this->getComposePsrNamespaceList()['autoload']['psr-4'];
         foreach ($psrList as $nameSpace){
-            $path = COM_JJCBS_ROOT_PATH . str_replace('\\' , '/' , $nameSpace);
+            $path = COM_JJCBS_ROOT_PATH . '/' . str_replace('\\' , '/' , $nameSpace);
             if ( !is_dir($path)) throw new AnnotationException('dir not found' . $path);
             $tempFileList = $this->scanFile($path);
             // parse file and writing
@@ -52,7 +53,7 @@ abstract class AnnotationCacheDriverAbstract implements AnnotationCacheInterface
      */
     protected function getComposePsrNamespaceList() : array {
         $jsonFilePath = $this->annotationConfig->getConfig()['composerFilePath'];
-        if ( !file_exists($jsonFilePath)) throw new AnnotationException('Build Annotation error , file not found ' . $jsonFilePath);
+        if ( !file_exists($jsonFilePath)) throw new AnnotationException('Build Annotation error , composer.json file not found ' . $jsonFilePath);
         return json_decode(file_get_contents($jsonFilePath) , true);
     }
 
@@ -62,10 +63,7 @@ abstract class AnnotationCacheDriverAbstract implements AnnotationCacheInterface
      * @return array
      */
     protected function scanFile(string $path) : array {
-        $full = glob($path . '/*' . self::FILE_SUF);
-        return array_map( function( $item ) {
-            return basename( $item );
-        }, $full);
+        return Main::scanDirectories($path);
     }
 
     protected function encodeFile(string $filePath) : string {
@@ -95,7 +93,7 @@ abstract class AnnotationCacheDriverAbstract implements AnnotationCacheInterface
      * @param string $namespace
      * @return string
      */
-    protected function namespaceToPath(string $namespace){
-        return $this->annotationConfig->getConfig()['appPath'] . '/' . $namespace;
+    protected function namespaceToBuildPath(string $namespace){
+        return $this->annotationConfig->getConfig()['appPath']  . '/build' . str_replace('\\' , '/' , $namespace);
     }
 }
