@@ -15,7 +15,8 @@
         "php": "^7.0"
     },
     "require-dev" : {
-        "clue/phar-composer" : "v1.0.0"
+        "clue/phar-composer" : "v1.0.0",
+        "phpunit/phpunit" : "*"
     },
     "autoload" : {
         "psr-4" : {
