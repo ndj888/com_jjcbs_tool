@@ -53,19 +53,19 @@ class AnnotationServiceImpl extends Service
         $data['namespace'] = $classReflection->getNamespaceName();
 
         // will parsing to a file cache the class.
-        foreach ($methodList as $m){
-            $data['methodList'][]['annotation'] = $this->annotationInstance->parseAnnotation($m['doc']);
-            $data['methodList'][]['methodName'] = $m['this']->getName();
+        foreach ($methodList as $k=> $m){
+            $data['methodList'][$k]['annotation'] = $this->annotationInstance->parseAnnotation($m['doc']);
+            $data['methodList'][$k]['methodName'] = $m['this']->getName();
         }
 
-        $data['classInfo'][]['class'] = $classInfo['this'];
-        $data['classInfo'][]['annotation'] = $this->annotationInstance->parseAnnotation($classInfo['doc']);
+        $data['classInfo']['class'] = $classInfo['this'];
+        $data['classInfo']['annotation'] = $this->annotationInstance->parseAnnotation($classInfo['doc']);
 
         // varList
-        foreach ($varList as $v){
-            $data['varList'][]['annotation'] = $this->annotationInstance->parseAnnotation($v['doc']);
-            $data['varList'][]['varName'] = $v['name'];
-            $data['varList'][]['varType'] = $v['type'];
+        foreach ($varList as $k => $v){
+            $data['varList'][$k]['annotation'] = $this->annotationInstance->parseAnnotation($v['doc']);
+            $data['varList'][$k]['varName'] = $v['name'];
+            $data['varList'][$k]['varType'] = $v['type'];
         }
 
         return $data;

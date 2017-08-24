@@ -18,8 +18,9 @@ interface AnnotationMethodInterface
 {
     /**
      * exec some things or return some results
+     * @param array $argv
      * @param array $param
      * @return mixed
      */
-    public static function exec(array $param = []);
+    public static function exec(array $argv  , array $param);
 }

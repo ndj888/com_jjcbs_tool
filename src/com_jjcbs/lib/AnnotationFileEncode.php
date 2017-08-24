@@ -7,6 +7,7 @@
  */
 
 namespace com_jjcbs\lib;
+use com_jjcbs\fun\Main;
 use \com_jjcbs\service\AnnotationServiceImpl;
 
 
@@ -38,14 +39,16 @@ class AnnotationFileEncode
      */
     public static function exec() : array {
         self::$output = self::LINE_HEAD;
-        $annotationService = ServiceFactory::getInstance(AnnotationServiceImpl::class);
-        $annotationService->setSrcClass(self::$filePath);
         // read file to class var
         self::$input = file_get_contents(self::$filePath);
+        $annotationService = ServiceFactory::getInstance(AnnotationServiceImpl::class);
+        // add get namespace from file.
+        $namespace = Main::getNamespaceFromFile(self::$input) . '\\' . Main::getClassNameFromFile(self::$input);
+        $annotationService->setSrcClass($namespace);
         $data = $annotationService->exec();
-        self::encodeClassInfo($data['classInfo']);
-        self::encodeVarList($data['varList']);
-        self::encodeMethodList($data['methodList']);
+        !empty($data['classInfo']['doc']) and self::encodeClassInfo($data['classInfo']);
+        !empty($data['varList']) && self::encodeVarList($data['varList']);
+        !empty($data['methodList'])&&  self::encodeMethodList($data['methodList']);
         return [
             'output' => self::$output,
             'namespace' => $data['namespace'],
@@ -58,13 +61,13 @@ class AnnotationFileEncode
      * @param array $info
      * @return string
      */
-    protected static function encodeMethodList(array &$info) : string {
+    protected static function encodeMethodList(array &$info) {
         foreach ($info as $k => $method){
             $info[$k]['buildStr'] = forward_static_call_array([
                 $method['annotation']['name'],
                 'exec'
             ] , [
-                'argv' => $info, // 环境相关参数，描述当前注解使用作用域名的上下文信息
+                'argv' => $method, // 环境相关参数，描述当前注解使用作用域名的上下文信息
                 'param' => $method['annotation']['param']
             ]);
             self::$output .= $info[$k]['buildStr'];
@@ -76,20 +79,20 @@ class AnnotationFileEncode
      * @param array $info
      * @return string
      */
-    protected static function encodeVarList(array &$info) : string {
+    protected static function encodeVarList(array &$info) {
         foreach ( $info as $k => $var){
             $info[$k]['buildStr'] = forward_static_call_array([
                 $var['annotation']['name'],
                 'exec'
             ] , [
-                'argv' => $info, // 环境相关参数，描述当前注解使用作用域名的上下文信息
+                'argv' => $var, // 环境相关参数，描述当前注解使用作用域名的上下文信息
                 'param' => $var['annotation']['param']
             ]);
             self::$output .= $info[$k]['buildStr'];
         }
     }
 
-    protected static function encodeClassInfo(array &$info) : string {
+    protected static function encodeClassInfo(array &$info) {
         $info['buildStr'] = forward_static_call_array([
             $info['annotation']['name'],
             'exec'

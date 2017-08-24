@@ -22,6 +22,7 @@ class AnnotationFileCacheDriverImpl extends AnnotationCacheDriverAbstract
     public function read(string $className): string
     {
         // TODO: Implement read() method.
+        return file_get_contents($this->namespaceToBuildPath($className) . self::FILE_SUF);
     }
 
     public function write(array $data): bool
@@ -29,11 +30,12 @@ class AnnotationFileCacheDriverImpl extends AnnotationCacheDriverAbstract
         // TODO: Implement write() method.
         $this->namespaceCreateAllDir($data['namespace']);
         try{
-            $fptr = fopen($this->namespaceToPath($data['namespace']) . '/' . $data['fileName'] , 'w');
+            $fptr = fopen( $this->namespaceToBuildPath($data['namespace']) . self::FILE_SUF , 'w');
             fwrite($fptr , $data['output']);
         }catch (\Exception $e){
             throw new AnnotationException('write class build file error : ' . $e->getMessage());
         }
+        return true;
     }
 
     public function compress(array $data): array

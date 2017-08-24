@@ -18,10 +18,6 @@ class TestOutPutAnnotation extends AnnotationObject
      * @var string
      */
     private static $type = '123';
-    /**
-     * @@com_jjcbs\lib\annotation\OutPutFormat(type="json")
-     * @return string
-     */
     public function getArr(){
         return [
             'text' => '123',

@@ -18,12 +18,14 @@ use com_jjcbs\interfaces\AnnotationMethodInterface;
  */
 class OutPutFormat implements AnnotationMethodInterface
 {
-    public static function exec(array $param = [])
+    public static function exec(array $argv, array $param)
     {
         // TODO: Implement exec() method.
         switch ($param['type']){
             case 'json':
-                return json_decode($param['methodValue'] , true);
+                $str = '';
+                $str .= $argv['varType'] . ' $' . $argv['varName'] . ';';
+                return $str;
                 break;
             case 'serialize':
                 return serialize($param['methodValue']);
@@ -32,5 +34,6 @@ class OutPutFormat implements AnnotationMethodInterface
         }
         return '';
     }
+
 
 }

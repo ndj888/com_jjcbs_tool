@@ -78,11 +78,11 @@ abstract class AnnotationCacheDriverAbstract implements AnnotationCacheInterface
      */
     protected function namespaceCreateAllDir(string $namespace){
         if ( is_dir($namespace)) return;
-        $dirList = explode('\\' , $namespace);
-        $str = '';
+        $dirList = explode('/' , $namespace);
+        $dirList = array_slice($dirList , 0 , count($dirList) - 1);
+        $path = $this->annotationConfig->getConfig()['appPath'] . '/build/';
         foreach ($dirList as $k => $dir){
-            $str .= $dir;
-            $path = $this->annotationConfig->getConfig()['appPath'] . '/' . $dir;
+            $path .=  '/' . $dir;
             // if not existed create the dir
             if ( !is_dir($path)) mkdir($path);
         }
@@ -94,6 +94,6 @@ abstract class AnnotationCacheDriverAbstract implements AnnotationCacheInterface
      * @return string
      */
     protected function namespaceToBuildPath(string $namespace){
-        return $this->annotationConfig->getConfig()['appPath']  . '/build' . str_replace('\\' , '/' , $namespace);
+        return $this->annotationConfig->getConfig()['appPath']  . '/build/' . str_replace('\\' , '/' , $namespace);
     }
 }
