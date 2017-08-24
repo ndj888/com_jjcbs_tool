@@ -48,10 +48,12 @@ class Annotation implements AnnotationInterface
         $methodList = [];
         foreach ($arr as $info) {
             $methodInfo = $class->getMethod($info->name);
+            $doc = $methodInfo->getDocComment();
+            if ( !$this->hasAnnotation($doc)) continue;
             array_push($methodList, [
                 'name' => $info->name,
                 'param' => $methodInfo->getParameters(),
-                'doc' => $methodInfo->getDocComment(),
+                'doc' => $doc,
                 'this' => $methodInfo
             ]);
         }
@@ -78,18 +80,19 @@ class Annotation implements AnnotationInterface
         return [
             'name' => $match[1],
             // array type
-            'param' => $this->parseParam($match[2])
+            'param' => $this->parseParam($match[2] ?? '')
         ];
     }
 
     protected function parseParam(string $docStr) : array
     {
+        if ( empty($docStr)) return [];
         $data = [];
         $arr = explode( ',' , $docStr);
 
         foreach ($arr as $v) {
             $dv = explode('=', $v);
-            $data[$dv[0]] = rtrim(ltrim($dv[1] , '"') , '"');
+           $data[trim($dv[0] , ' ')] = rtrim(ltrim(trim($dv[1] , ' ') , '"') , '"');
         }
         return $data;
     }
@@ -100,9 +103,11 @@ class Annotation implements AnnotationInterface
         $arr = $class->getProperties(\ReflectionProperty::IS_PRIVATE | \ReflectionProperty::IS_PROTECTED | \ReflectionProperty::IS_STATIC);
         $varList = [];
         foreach ($arr as $info){
+            $doc = $info->getDocComment();
+            if ( !$this->hasAnnotation($doc)) continue;
             array_push($varList , [
                 'name' => $info->name,
-                'doc' => $info->getDocComment(),
+                'doc' => $doc,
                 'type' => $this->parseVarType($info),
                 'this' => $info
             ]);
@@ -120,6 +125,16 @@ class Annotation implements AnnotationInterface
         if ( $property->isStatic()) array_push($typeArr , 'static');
         return implode(' ' , $typeArr);
 
+    }
+
+    /**
+     * check the doc has annotation
+     * return bool type
+     * @param string $doc
+     * @return bool
+     */
+    protected function hasAnnotation(string $doc) : bool{
+        return strpos($doc , self::SUF_SIGN) != false;
     }
 
 
