@@ -40,7 +40,8 @@ abstract class AnnotationCacheDriverAbstract implements AnnotationCacheInterface
             // parse file and writing
             foreach ($tempFileList as $file){
                 // compress , encode file and  build file
-                $this->write($this->compress($this->encodeFile($file)));
+                $outPutArr = $this->encodeFile($file);
+                !empty($outPutArr['output']) && $this->write($this->compress($outPutArr));
             }
         }
     }
@@ -66,7 +67,7 @@ abstract class AnnotationCacheDriverAbstract implements AnnotationCacheInterface
         return Main::scanDirectories($path);
     }
 
-    protected function encodeFile(string $filePath) : string {
+    protected function encodeFile(string $filePath) : array {
         AnnotationFileEncode::setFilePath($filePath);
         return AnnotationFileEncode::exec();
     }
@@ -78,8 +79,7 @@ abstract class AnnotationCacheDriverAbstract implements AnnotationCacheInterface
      */
     protected function namespaceCreateAllDir(string $namespace){
         if ( is_dir($namespace)) return;
-        $dirList = explode('/' , $namespace);
-        $dirList = array_slice($dirList , 0 , count($dirList) - 1);
+        $dirList = explode('\\' , str_replace('/' , '\\' , $namespace));
         $path = $this->annotationConfig->getConfig()['appPath'] . '/build/';
         foreach ($dirList as $k => $dir){
             $path .=  '/' . $dir;

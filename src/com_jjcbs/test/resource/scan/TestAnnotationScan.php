@@ -17,7 +17,7 @@ namespace com_jjcbs\test\resource\scan;
 class TestAnnotationScan
 {
     /**
-     * @@com\jjcbs\lib\annotation\OutPutFormat(type="json")
+     * @@com_jjcbs\lib\annotation\OutPutFormat(type="json")
      * @return array
      */
     public function getArr(){

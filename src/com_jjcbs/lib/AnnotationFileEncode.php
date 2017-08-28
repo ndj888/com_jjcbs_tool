@@ -21,7 +21,7 @@ class AnnotationFileEncode
     protected static $input = '';
     protected static $filePath = '';
     protected static $output = '';
-    const LINE_HEAD = '<?php\n/**Build by com_jjcbs tool.**/\n\n';
+    const LINE_HEAD = "<?php\n/**Build by com_jjcbs tool.**/\n\n";
 
     /**
      * @param string $filePath
@@ -38,21 +38,30 @@ class AnnotationFileEncode
      * @return array
      */
     public static function exec() : array {
+        $default = ['output' => '' , 'namespace' => '' , 'fileName' => ''];
         self::$output = self::LINE_HEAD;
         // read file to class var
         self::$input = file_get_contents(self::$filePath);
         $annotationService = ServiceFactory::getInstance(AnnotationServiceImpl::class);
         // add get namespace from file.
-        $namespace = Main::getNamespaceFromFile(self::$input) . '\\' . Main::getClassNameFromFile(self::$input);
+        $className =  Main::getClassNameFromFile(self::$input);
+        // not has class name , because it's interface or trait
+        if ( empty($className)) return $default;
+        // add class name there
+        $className =  Main::getClassNameFromFile(self::$input);;
+        $namespace = Main::getNamespaceFromFile(self::$input) . '\\' .$className;
         $annotationService->setSrcClass($namespace);
         $data = $annotationService->exec();
+        // not annotation parse
+        if(empty($data['classInfo']['doc']) && empty($data['varList']) && empty($data['methodList'])) return $default;
         !empty($data['classInfo']['doc']) and self::encodeClassInfo($data['classInfo']);
         !empty($data['varList']) && self::encodeVarList($data['varList']);
         !empty($data['methodList'])&&  self::encodeMethodList($data['methodList']);
         return [
             'output' => self::$output,
             'namespace' => $data['namespace'],
-            'fileName' => $data['fileName']
+            'fileName' => $data['fileName'],
+            'className' => $className
         ];
     }
 
@@ -86,7 +95,7 @@ class AnnotationFileEncode
                 'exec'
             ] , [
                 'argv' => $var, // 环境相关参数，描述当前注解使用作用域名的上下文信息
-                'param' => $var['annotation']['param']
+                'param' => $var['annotation']['param'],
             ]);
             self::$output .= $info[$k]['buildStr'];
         }

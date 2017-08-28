@@ -38,7 +38,9 @@ class AnnotationCacheFileDriverTest extends TestCase
     public function testWrite(){
         $this->assertTrue($this->annotationFileCacheDriver->write(
             [
-                'namespace' => 'com_jjcbs/conf/testConf',
+                'namespace' => 'com_jjcbs/conf',
+                'fileName' => 'testConf',
+                'className' => 'testConf',
                 'output' => "<?php\n class conf{}"
             ]
         ));
@@ -46,5 +48,10 @@ class AnnotationCacheFileDriverTest extends TestCase
 
     public function testRead(){
         $this->assertNotEmpty($this->annotationFileCacheDriver->read('com_jjcbs/conf/testConf'));
+    }
+
+    public function testScan(){
+        $this->annotationFileCacheDriver->scanNamespacesFiles();
+        $this->assertFileExists(COM_JJCBS_ROOT_PATH. '/build/com_jjcbs/test/resource/scan/TestAnnotationScan.php');
     }
 }
