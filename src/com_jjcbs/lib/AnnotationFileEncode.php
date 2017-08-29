@@ -77,7 +77,8 @@ class AnnotationFileEncode
                 'exec'
             ] , [
                 'argv' => $method, // 环境相关参数，描述当前注解使用作用域名的上下文信息
-                'param' => $method['annotation']['param']
+                'param' => $method['annotation']['param'],
+                'body' => AnnotationBodyParser::parseMethod($method['method'] , $method['annotation'])
             ]);
             self::$output .= $info[$k]['buildStr'];
         }
@@ -95,7 +96,7 @@ class AnnotationFileEncode
                 'exec'
             ] , [
                 'argv' => $var, // 环境相关参数，描述当前注解使用作用域名的上下文信息
-                'param' => $var['annotation']['param'],
+                'param' => $var['annotation']['param']
             ]);
             self::$output .= $info[$k]['buildStr'];
         }
@@ -107,7 +108,8 @@ class AnnotationFileEncode
             'exec'
         ] , [
             'argv' => $info,
-            'param' => $info['annotation']['param']
+            'param' => $info['annotation']['param'],
+            'body' => AnnotationBodyParser::parseClass($info['this'] , $info['annotation'])
         ]);
         self::$output .= $info['buildStr'];
     }

@@ -56,6 +56,8 @@ class AnnotationServiceImpl extends Service
         foreach ($methodList as $k=> $m){
             $data['methodList'][$k]['annotation'] = $this->annotationInstance->parseAnnotation($m['doc']);
             $data['methodList'][$k]['methodName'] = $m['this']->getName();
+            // add method ReflectionMethod
+            $data['methodList'][$k]['method'] = $m['this'];
         }
 
         $data['classInfo']['class'] = $classInfo['this'];
