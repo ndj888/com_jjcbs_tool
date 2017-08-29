@@ -17,11 +17,13 @@ class TestOutPutAnnotation extends AnnotationObject
      * @@com_jjcbs\lib\annotation\OutPutFormat(type="json")
      * @var string
      */
-    private static $type = '123';
+    private $type = '123';
     public function getArr(){
         return [
             'text' => '123',
             'type' => 'blog'
         ];
     }
+
+     //{{annotation placeholder}}
 }

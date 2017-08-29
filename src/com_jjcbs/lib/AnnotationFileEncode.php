@@ -72,6 +72,7 @@ class AnnotationFileEncode
      */
     protected static function encodeMethodList(array &$info) {
         foreach ($info as $k => $method){
+            self::setInput($method);
             $info[$k]['buildStr'] = forward_static_call_array([
                 $method['annotation']['name'],
                 'exec'
@@ -80,7 +81,7 @@ class AnnotationFileEncode
                 'param' => $method['annotation']['param'],
                 'body' => AnnotationBodyParser::parseMethod($method['method'] , $method['annotation'])
             ]);
-            self::$output .= $info[$k]['buildStr'];
+            self::$output = $info[$k]['buildStr'];
         }
     }
 
@@ -91,6 +92,7 @@ class AnnotationFileEncode
      */
     protected static function encodeVarList(array &$info) {
         foreach ( $info as $k => $var){
+            self::setInput($var);
             $info[$k]['buildStr'] = forward_static_call_array([
                 $var['annotation']['name'],
                 'exec'
@@ -98,11 +100,12 @@ class AnnotationFileEncode
                 'argv' => $var, // 环境相关参数，描述当前注解使用作用域名的上下文信息
                 'param' => $var['annotation']['param']
             ]);
-            self::$output .= $info[$k]['buildStr'];
+            self::$output = $info[$k]['buildStr'];
         }
     }
 
     protected static function encodeClassInfo(array &$info) {
+        self::setInput($info);
         $info['buildStr'] = forward_static_call_array([
             $info['annotation']['name'],
             'exec'
@@ -111,6 +114,15 @@ class AnnotationFileEncode
             'param' => $info['annotation']['param'],
             'body' => AnnotationBodyParser::parseClass($info['this'] , $info['annotation'])
         ]);
-        self::$output .= $info['buildStr'];
+        self::$output = $info['buildStr'];
+    }
+
+    protected static function setInput(array &$info){
+        forward_static_call_array([
+            $info['annotation']['name'],
+            'setInput'
+        ] , [
+            'input' => self::$input
+        ]);
     }
 }

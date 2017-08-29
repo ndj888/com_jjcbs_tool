@@ -20,7 +20,8 @@ interface AnnotationMethodInterface
      * exec some things or return some results
      * @param array $argv
      * @param array $param
+     * @param string $input
      * @return mixed
      */
-    public static function exec(array $argv  , array $param);
+    public static function exec(array $argv  , array $param , string $input = '');
 }
