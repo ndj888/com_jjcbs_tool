@@ -61,6 +61,8 @@ class AnnotationServiceImpl extends Service
         }
 
         $data['classInfo']['class'] = $classInfo['this'];
+        // short class name
+        $data['classInfo']['className'] = trim(str_replace($data['namespace'] , '' , $classInfo['this']->getName()) , '\\');
         $data['classInfo']['annotation'] = $this->annotationInstance->parseAnnotation($classInfo['doc']);
 
         // varList

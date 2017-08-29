@@ -8,6 +8,7 @@
 
 namespace com_jjcbs\lib;
 use com_jjcbs\fun\Main;
+use com_jjcbs\service\AnnotationConfigServiceImpl;
 use \com_jjcbs\service\AnnotationServiceImpl;
 
 
@@ -21,7 +22,6 @@ class AnnotationFileEncode
     protected static $input = '';
     protected static $filePath = '';
     protected static $output = '';
-    const LINE_HEAD = "<?php\n/**Build by com_jjcbs tool.**/\n\n";
 
     /**
      * @param string $filePath
@@ -39,7 +39,6 @@ class AnnotationFileEncode
      */
     public static function exec() : array {
         $default = ['output' => '' , 'namespace' => '' , 'fileName' => ''];
-        self::$output = self::LINE_HEAD;
         // read file to class var
         self::$input = file_get_contents(self::$filePath);
         $annotationService = ServiceFactory::getInstance(AnnotationServiceImpl::class);
@@ -53,8 +52,8 @@ class AnnotationFileEncode
         $annotationService->setSrcClass($namespace);
         $data = $annotationService->exec();
         // not annotation parse
-        if(empty($data['classInfo']['doc']) && empty($data['varList']) && empty($data['methodList'])) return $default;
-        !empty($data['classInfo']['doc']) and self::encodeClassInfo($data['classInfo']);
+        if(empty($data['classInfo']['annotation']['name']) && empty($data['varList']) && empty($data['methodList'])) return $default;
+        !empty($data['classInfo']['annotation']['name']) and self::encodeClassInfo($data['classInfo']);
         !empty($data['varList']) && self::encodeVarList($data['varList']);
         !empty($data['methodList'])&&  self::encodeMethodList($data['methodList']);
         return [
@@ -72,6 +71,8 @@ class AnnotationFileEncode
      */
     protected static function encodeMethodList(array &$info) {
         foreach ($info as $k => $method){
+            // alias parse
+            $info['annotation']['name'] = self::aliasMapParse($method['annotation']['name']);
             self::setInput($method);
             $info[$k]['buildStr'] = forward_static_call_array([
                 $method['annotation']['name'],
@@ -92,6 +93,8 @@ class AnnotationFileEncode
      */
     protected static function encodeVarList(array &$info) {
         foreach ( $info as $k => $var){
+            // alias parse
+            $info['annotation']['name'] = self::aliasMapParse($var['annotation']['name']);
             self::setInput($var);
             $info[$k]['buildStr'] = forward_static_call_array([
                 $var['annotation']['name'],
@@ -105,6 +108,8 @@ class AnnotationFileEncode
     }
 
     protected static function encodeClassInfo(array &$info) {
+        // alias parse
+        $info['annotation']['name'] = self::aliasMapParse($info['annotation']['name']);
         self::setInput($info);
         $info['buildStr'] = forward_static_call_array([
             $info['annotation']['name'],
@@ -112,7 +117,7 @@ class AnnotationFileEncode
         ] , [
             'argv' => $info,
             'param' => $info['annotation']['param'],
-            'body' => AnnotationBodyParser::parseClass($info['this'] , $info['annotation'])
+            'body' => AnnotationBodyParser::parseClass($info['class'] , $info['annotation'])
         ]);
         self::$output = $info['buildStr'];
     }
@@ -124,5 +129,16 @@ class AnnotationFileEncode
         ] , [
             'input' => self::$input
         ]);
+    }
+
+    /**
+     * alias map parse
+     * @param string $name
+     * @return string namespace
+     */
+    protected static function aliasMapParse(string $name) : string{
+        $config = ServiceFactory::getInstance(AnnotationConfigServiceImpl::class);
+        $aliasArr = $config->getConfig()['alias'] ?? [];
+        return array_key_exists($name , $aliasArr) ? $aliasArr[$name] : $name;
     }
 }

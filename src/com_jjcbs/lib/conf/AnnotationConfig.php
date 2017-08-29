@@ -7,6 +7,7 @@
  */
 
 namespace com_jjcbs\lib\conf;
+use com_jjcbs\lib\annotation\Service;
 use com_jjcbs\lib\Conf;
 
 
@@ -20,7 +21,7 @@ class AnnotationConfig extends Conf
     public static $data = [
         // the alias map
         'alias' => [
-
+            'Service' => Service::class
         ],
         // These annotations will be scanning
         'scanNamespace' => [

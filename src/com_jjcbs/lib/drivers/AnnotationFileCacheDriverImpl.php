@@ -19,6 +19,7 @@ use com_jjcbs\lib\AnnotationCacheDriverAbstract;
  */
 class AnnotationFileCacheDriverImpl extends AnnotationCacheDriverAbstract
 {
+
     public function read(string $className): string
     {
         // TODO: Implement read() method.
@@ -31,7 +32,7 @@ class AnnotationFileCacheDriverImpl extends AnnotationCacheDriverAbstract
         $this->namespaceCreateAllDir($data['namespace']);
         try{
             $fptr = fopen( $this->namespaceToBuildPath($data['namespace']) . '/' . $data['className'] .  self::FILE_SUF , 'w');
-            fwrite($fptr , $data['output']);
+            fwrite($fptr , str_replace('<?php' , self::LINE_HEAD , $data['output']));
         }catch (\Exception $e){
             throw new AnnotationException('write class build file error : ' . $e->getMessage());
         }

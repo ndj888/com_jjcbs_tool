@@ -16,6 +16,7 @@ use com_jjcbs\service\AnnotationConfigServiceImpl;
 
 abstract class AnnotationCacheDriverAbstract implements AnnotationCacheInterface
 {
+    const LINE_HEAD = "<?php\n/**Build by com_jjcbs tool.**/\n\n";
     protected $annotationConfig = null;
     const FILE_SUF = '.php';
 

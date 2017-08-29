@@ -62,11 +62,12 @@ abstract class AnnotationMethodAbstract implements AnnotationMethodInterface
 
     /**
      * parsing method replace static $input
+     * @param $data
      * @return mixed
      */
-    abstract static protected function parsedMethod();
-    abstract static protected function parsedClass();
-    abstract static protected function parsedVar();
+    abstract static protected function parsedMethod($data = null);
+    abstract static protected function parsedClass($data = null);
+    abstract static protected function parsedVar($data = null);
 
     /**
      * the annotation must do things
