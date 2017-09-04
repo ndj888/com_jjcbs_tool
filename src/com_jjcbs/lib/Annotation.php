@@ -78,7 +78,7 @@ class Annotation implements AnnotationInterface
             throw new AnnotationException('parsed annotation error');
         }
         return [
-            'name' => $match[1],
+            'name' => $match[1] ?? '',
             // array type
             'param' => $this->parseParam($match[2] ?? '')
         ];

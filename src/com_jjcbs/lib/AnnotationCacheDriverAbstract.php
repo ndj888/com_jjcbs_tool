@@ -41,6 +41,7 @@ abstract class AnnotationCacheDriverAbstract implements AnnotationCacheInterface
             // parse file and writing
             foreach ($tempFileList as $file){
                 // compress , encode file and  build file
+                if ( strpos($file , self::FILE_SUF ) === false) continue;
                 $outPutArr = $this->encodeFile($file);
                 !empty($outPutArr['output']) && $this->write($this->compress($outPutArr));
             }

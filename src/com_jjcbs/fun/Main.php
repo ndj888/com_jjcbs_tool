@@ -48,7 +48,7 @@ class Main
      */
     public static function getNamespaceFromFile(&$input){
         if ( preg_match('/namespace\s+(\S+)\s?;/' , $input , $match) !== false){
-            return $match[1];
+            return $match[1] ?? '';
         }
         return '';
     }
@@ -60,7 +60,7 @@ class Main
      */
     public static function getClassNameFromFile(&$input){
         if ( preg_match('/class\s+(\S+)\s*\S*\s*\S*\s*\S*\n*{/' , $input , $match) !== false){
-            return $match[1];
+            return $match[1] ?? '';
         }
         return '';
     }
