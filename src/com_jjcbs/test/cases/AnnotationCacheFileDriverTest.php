@@ -9,6 +9,7 @@
 namespace com_jjcbs\cases\test;
 
 
+use com_jjcbs\conf\AnnotationAlias;
 use com_jjcbs\lib\conf\AnnotationConfig;
 use com_jjcbs\lib\drivers\AnnotationFileCacheDriverImpl;
 use com_jjcbs\lib\ServiceFactory;
@@ -28,7 +29,7 @@ class AnnotationCacheFileDriverTest extends TestCase
 
     public function testCreateConfig(){
         $config = ServiceFactory::getInstance(AnnotationConfigServiceImpl::class);
-        $config->setConfig(AnnotationConfig::$data);
+        $config->setConfig(AnnotationAlias::$data);
         $this->assertNotNull($config);
         return $config;
     }
