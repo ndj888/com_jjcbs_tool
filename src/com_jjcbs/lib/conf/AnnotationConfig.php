@@ -32,6 +32,7 @@ class AnnotationConfig extends Conf
             'com_jjcbs\\test\\resource\\scan'
         ],
         'composerFilePath' => COM_JJCBS_ROOT_PATH . '/composer.json',
-        'appPath' => COM_JJCBS_ROOT_PATH
+        'appPath' => COM_JJCBS_ROOT_PATH,
+        'buildPath' => COM_JJCBS_ROOT_PATH . '/build/'
     ];
 }

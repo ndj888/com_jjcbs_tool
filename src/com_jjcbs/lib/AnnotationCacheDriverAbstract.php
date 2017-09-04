@@ -95,6 +95,6 @@ abstract class AnnotationCacheDriverAbstract implements AnnotationCacheInterface
      * @return string
      */
     protected function namespaceToBuildPath(string $namespace){
-        return $this->annotationConfig->getConfig()['appPath']  . '/build/' . str_replace('\\' , '/' , $namespace);
+        return $this->annotationConfig->getConfig()['buildPath'] . str_replace('\\' , '/' , $namespace);
     }
 }
