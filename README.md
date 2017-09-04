@@ -139,7 +139,10 @@ $annotationConfig = \com_jjcbs\lib\ServiceFactory::getInstance(\com_jjcbs\servic
     ],
     // These annotations will be scanning
     // 所有composer psr-4定义的autoload命名空间将被扫描
-    'composerFilePath' => COM_JJCBS_ROOT_PATH . '/composer.json',
+    // These annotations will be scanning
+    'scanNamespace' => [
+        "com_jjcbs\\" => "src/com_jjcbs/"
+    ],
     // 项目根目录
     'appPath' => COM_JJCBS_ROOT_PATH,
     // build 目录注意 /

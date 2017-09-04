@@ -89,7 +89,7 @@ class AnnotationFun
      */
     public static function noParamType(string $str){
         if ( preg_match('/\$\w*\s*\,?/' , $str , $match) !== false){
-            return $match[1];
+            return $match[1] ?? '';
         }
         return '';
     }
