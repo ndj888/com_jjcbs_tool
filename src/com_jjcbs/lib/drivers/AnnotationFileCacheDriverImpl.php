@@ -29,9 +29,17 @@ class AnnotationFileCacheDriverImpl extends AnnotationCacheDriverAbstract
     public function write(array $data): bool
     {
         // TODO: Implement write() method.
-        $this->namespaceCreateAllDir($data['namespace']);
         try{
-            $fptr = fopen( $this->namespaceToBuildPath($data['namespace']) . '/' . $data['className'] .  self::FILE_SUF , 'w');
+            if ( empty($data['namespace'])){
+                // file build
+                $fileBuidPath = $this->fileToBuildPath($data['fileName']);
+                $this->createFileDir(preg_replace( '/\w+\.php/' , '' , $fileBuidPath));
+                $fptr = fopen( $fileBuidPath , 'w');
+            }else{
+                // namespace build
+                $this->namespaceCreateAllDir($data['namespace']);
+                $fptr = fopen( $this->namespaceToBuildPath($data['namespace']) . '/' . $data['className'] .  self::FILE_SUF , 'w');
+            }
             fwrite($fptr , str_replace('<?php' , self::LINE_HEAD , $data['output']));
         }catch (\Exception $e){
             throw new AnnotationException('write class build file error : ' . $e->getMessage());
