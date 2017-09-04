@@ -26,4 +26,25 @@ class TestAnnotationScan
             'json'
         ];
     }
+
+    /**
+     * @@OutPutFormat(type="json")
+     * @return array
+     */
+    public function getJson(){
+        return $this->getArr();
+    }
+
+    /**
+     * @@OutPutFormat(type="json")
+     * @param string $name
+     * @param string $type
+     * @return array
+     */
+    public function testParam(string $name , string $type){
+        return [
+            'name' => $name,
+            'type' => $type
+        ];
+    }
 }

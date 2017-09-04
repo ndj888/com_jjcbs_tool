@@ -22,6 +22,7 @@ class AnnotationFileEncode
     protected static $input = '';
     protected static $filePath = '';
     protected static $output = '';
+    protected static $arrInput = [];
 
     /**
      * @param string $filePath
@@ -33,6 +34,9 @@ class AnnotationFileEncode
     }
 
 
+
+
+
     /**
      * return the result string
      * @return array
@@ -41,6 +45,8 @@ class AnnotationFileEncode
         $default = ['output' => '' , 'namespace' => '' , 'fileName' => ''];
         // read file to class var
         self::$input = file_get_contents(self::$filePath);
+        // add arr type
+        self::$arrInput = file(self::$filePath);
         $annotationService = ServiceFactory::getInstance(AnnotationServiceImpl::class);
         // add get namespace from file.
         $className =  Main::getClassNameFromFile(self::$input);
@@ -72,7 +78,7 @@ class AnnotationFileEncode
     protected static function encodeMethodList(array &$info) {
         foreach ($info as $k => $method){
             // alias parse
-            $info['annotation']['name'] = self::aliasMapParse($method['annotation']['name']);
+            $method['annotation']['name'] = self::aliasMapParse($method['annotation']['name']);
             self::setInput($method);
             $info[$k]['buildStr'] = forward_static_call_array([
                 $method['annotation']['name'],
@@ -80,7 +86,7 @@ class AnnotationFileEncode
             ] , [
                 'argv' => $method, // 环境相关参数，描述当前注解使用作用域名的上下文信息
                 'param' => $method['annotation']['param'],
-                'body' => AnnotationBodyParser::parseMethod($method['method'] , $method['annotation'])
+                'body' => AnnotationBodyParser::parseMethod($method['method'] , self::$arrInput)
             ]);
             self::$output = $info[$k]['buildStr'];
         }
@@ -117,7 +123,7 @@ class AnnotationFileEncode
         ] , [
             'argv' => $info,
             'param' => $info['annotation']['param'],
-            'body' => AnnotationBodyParser::parseClass($info['class'] , $info['annotation'])
+            'input' => AnnotationBodyParser::parseClass($info['class'] , self::$arrInput)
         ]);
         self::$output = $info['buildStr'];
     }

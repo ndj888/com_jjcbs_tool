@@ -7,6 +7,8 @@
  */
 
 namespace com_jjcbs\lib\conf;
+use com_jjcbs\lib\annotation\OutPutFormat;
+use com_jjcbs\lib\annotation\Rpc;
 use com_jjcbs\lib\annotation\Service;
 use com_jjcbs\lib\Conf;
 
@@ -21,7 +23,9 @@ class AnnotationConfig extends Conf
     public static $data = [
         // the alias map
         'alias' => [
-            'Service' => Service::class
+            'Service' => Service::class,
+            'Rpc' => Rpc::class,
+            'OutPutFormat' => OutPutFormat::class
         ],
         // These annotations will be scanning
         'scanNamespace' => [

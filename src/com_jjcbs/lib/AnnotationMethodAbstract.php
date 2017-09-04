@@ -10,6 +10,7 @@ namespace com_jjcbs\lib;
 
 
 use com_jjcbs\exceptions\AnnotationException;
+use com_jjcbs\fun\AnnotationFun;
 use com_jjcbs\interfaces\AnnotationMethodInterface;
 
 /**
@@ -22,6 +23,7 @@ abstract class AnnotationMethodAbstract implements AnnotationMethodInterface
     protected static $argv = [];
     protected static $param = [];
     protected static $input = '';
+    protected static $body = ''; // body content
 
     /**
      * @param string $input
@@ -39,6 +41,7 @@ abstract class AnnotationMethodAbstract implements AnnotationMethodInterface
         // TODO: Implement exec() method.
         self::$argv = $argv;
         self::$param = $param;
+        self::$body = $input;
 
         try{
             $funName = self::getMethodName();
@@ -48,7 +51,7 @@ abstract class AnnotationMethodAbstract implements AnnotationMethodInterface
             // return output
             return self::$input;
         }catch (AnnotationException $exception){
-            self::exception($exception);
+            static::exception($exception);
         }
     }
 
@@ -82,5 +85,13 @@ abstract class AnnotationMethodAbstract implements AnnotationMethodInterface
      * @return mixed
      */
     abstract static protected function exception(AnnotationException $exception);
+
+    /**
+     * parseMethodExec unitive
+     * @param null $data
+     */
+    protected function parseMethodExec($data = null){
+        self::$input =  AnnotationFun::replaceMethodStr(self::$body , AnnotationFun::createClosure(self::$body , self::$argv['methodName'], $data) , self::$input);
+    }
 
 }

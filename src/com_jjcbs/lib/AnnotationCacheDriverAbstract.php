@@ -35,7 +35,7 @@ abstract class AnnotationCacheDriverAbstract implements AnnotationCacheInterface
     public function scanNamespacesFiles() {
         $psrList = $this->getComposePsrNamespaceList()['autoload']['psr-4'];
         foreach ($psrList as $nameSpace){
-            $path = COM_JJCBS_ROOT_PATH . '/' . str_replace('\\' , '/' , $nameSpace);
+            $path = ServiceFactory::getInstance(AnnotationConfigServiceImpl::class)->getConfig()['appPath'] . '/' . str_replace('\\' , '/' , $nameSpace);
             if ( !is_dir($path)) throw new AnnotationException('dir not found' . $path);
             $tempFileList = $this->scanFile($path);
             // parse file and writing

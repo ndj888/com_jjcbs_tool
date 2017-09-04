@@ -10,6 +10,7 @@ namespace com_jjcbs\lib\annotation;
 
 
 use com_jjcbs\exceptions\AnnotationException;
+use com_jjcbs\fun\AnnotationFun;
 use com_jjcbs\lib\AnnotationMethodAbstract;
 
 /**
@@ -22,6 +23,7 @@ class OutPutFormat extends AnnotationMethodAbstract
     static protected function parsedMethod($data = null)
     {
         // TODO: Implement parsedMethod() method.
+        self::parseMethodExec($data);
     }
 
     static protected function parsedClass($data = null)
@@ -33,10 +35,7 @@ class OutPutFormat extends AnnotationMethodAbstract
     static protected function parsedVar($data = null)
     {
         // TODO: Implement parsedVar() method.
-        $getterStr = 'public function get' . ucfirst(self::$argv['varName']) . "(){\n"
-            // body
-            . $data
-            .'}';
+        $getterStr = AnnotationFun::createGetterByVar(self::$argv['varName'] , $data);
         self::$input = str_replace('//{{annotation placeholder}}' , $getterStr , self::$input);
     }
 
@@ -45,7 +44,8 @@ class OutPutFormat extends AnnotationMethodAbstract
         // TODO: Implement do() method.
         switch (self::$param['type']){
             case 'json':
-                return sprintf('return json_decode($this->%s , true);' , self::$argv['varName']);
+                if(isset(self::$argv['varName'])) return sprintf('return json_decode($this->%s , true);' , self::$argv['varName']);
+                if(isset(self::$argv['methodName'])) return 'return json_decode(%s , true)';
                 break;
             default:break;
 
