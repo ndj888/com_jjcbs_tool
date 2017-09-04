@@ -98,4 +98,32 @@ abstract class AnnotationCacheDriverAbstract implements AnnotationCacheInterface
     protected function namespaceToBuildPath(string $namespace){
         return $this->annotationConfig->getConfig()['buildPath'] . str_replace('\\' , '/' , $namespace);
     }
+
+    /**
+     * create dir by file
+     * @param $path
+     */
+    protected function createFileDir($path)
+    {
+        if (!file_exists($path)) {
+            $this->createFileDir(dirname($path));
+            mkdir($path, 0777);
+        }
+    }
+
+    /**
+     * file path to build path
+     * @param $path
+     * @return mixed|string
+     */
+    protected function fileToBuildPath($path){
+        $configService = ServiceFactory::getInstance(AnnotationConfigServiceImpl::class);
+        $list = $configService->getConfig()['scanNamespace'];
+        foreach ($list as $namespace => $filePath){
+            if ( strpos($path , $filePath) !== false){
+                return str_replace($configService->getConfig()['appPath'] .'/' .  $filePath , $configService->getConfig()['buildPath'] . str_replace('\\' , '/' , $namespace) , $path);
+            };
+        }
+        return '';
+    }
 }

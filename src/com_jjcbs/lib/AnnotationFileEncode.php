@@ -41,7 +41,6 @@ class AnnotationFileEncode
      */
     public static function exec(): array
     {
-        $default = ['output' => '', 'namespace' => '', 'fileName' => '', 'className' => ''];
         // read file to class var
         self::$input = file_get_contents(self::$filePath);
         // add arr type
@@ -50,7 +49,7 @@ class AnnotationFileEncode
         // add get namespace from file.
         $className = Main::getClassNameFromFile(self::$input);
         // not has class name , because it's interface or trait
-        if (empty($className)) return $default;
+        if (empty($className)) return ['output' => self::$input, 'namespace' => '', 'fileName' => self::$filePath, 'className' => $className];
         // add class name there
         $className = Main::getClassNameFromFile(self::$input);;
         $namespace = Main::getNamespaceFromFile(self::$input) . '\\' . $className;
