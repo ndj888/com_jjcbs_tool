@@ -90,7 +90,7 @@ abstract class AnnotationMethodAbstract implements AnnotationMethodInterface
      * parseMethodExec unitive
      * @param null $data
      */
-    protected function parseMethodExec($data = null){
+    protected static function parseMethodExec($data = null){
         self::$input =  AnnotationFun::replaceMethodStr(self::$body , AnnotationFun::createClosure(self::$body , self::$argv['methodName'], $data) , self::$input);
     }
 

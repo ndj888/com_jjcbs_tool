@@ -23,7 +23,7 @@ class OutPutFormat extends AnnotationMethodAbstract
     static protected function parsedMethod($data = null)
     {
         // TODO: Implement parsedMethod() method.
-        self::parseMethodExec($data);
+        static::parseMethodExec($data);
     }
 
     static protected function parsedClass($data = null)
