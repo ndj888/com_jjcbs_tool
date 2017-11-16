@@ -6,7 +6,7 @@
  * Time: 11:30
  */
 
-namespace ext\lib;
+namespace com_jjcbs\lib;
 
 /**
  * 参数映射
