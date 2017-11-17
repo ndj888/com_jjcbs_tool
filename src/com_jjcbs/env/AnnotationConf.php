@@ -9,7 +9,7 @@
 return [
     // the alias map
     'alias' => [
-        'Service' => \com_jjcbs\lib\Service::class,
+        'Service' => \com_jjcbs\lib\annotation\Service::class,
         'Rpc' => \com_jjcbs\lib\annotation\Rpc::class,
         'OutPutFormat' => \com_jjcbs\lib\annotation\OutPutFormat::class
     ],
