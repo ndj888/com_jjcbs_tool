@@ -40,7 +40,8 @@ class AnnotationFileCacheDriverImpl extends AnnotationCacheDriverAbstract
                 $this->namespaceCreateAllDir($data['namespace']);
                 $fptr = fopen( $this->namespaceToBuildPath($data['namespace']) . '/' . $data['className'] .  self::FILE_SUF , 'w');
             }
-            fwrite($fptr , str_replace('<?php' , self::LINE_HEAD , $data['output']));
+            $header = strpos($data['output'] , self::BUILD_MARK) === false ? self::LINE_HEAD . self::BUILD_MARK : self::LINE_HEAD;
+            fwrite($fptr , str_replace('<?php' , $header , $data['output']));
         }catch (\Exception $e){
             throw new AnnotationException('write class build file error : ' . $e->getMessage());
         }
