@@ -60,7 +60,7 @@ abstract class AnnotationMethodAbstract implements AnnotationMethodInterface
      * @return string
      */
     protected static function getMethodName(){
-        return isset(self::$argv['methodName']) ? 'parsedMethod' : (self::$argv['varName'] ? 'parsedVar' : 'parsedClass');
+        return isset(self::$argv['methodName']) ? 'parsedMethod' : (isset(self::$argv['varName']) ? 'parsedVar' : 'parsedClass');
     }
 
     /**
