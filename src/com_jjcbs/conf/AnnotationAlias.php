@@ -26,6 +26,10 @@ class AnnotationAlias extends Conf
             "com_jjcbs\\" => "src/com_jjcbs/"
         ],
         'appPath' => COM_JJCBS_ROOT_PATH,
-        'buildPath' => COM_JJCBS_ROOT_PATH . '/build/'
+        'buildPath' => COM_JJCBS_ROOT_PATH . '/build/',
+        'tpl' => [
+            'use_template' => '//{use template}',
+            'method_template' => '//{method template}'
+        ]
     ];
 }
