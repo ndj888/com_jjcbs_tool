@@ -46,7 +46,7 @@ function main(array $argv , int $argc){
  * out put help document
  */
 function showHelp(){
-
+    echo "commond\nbuild\nhelp\nclean\n";
 }
 
 /**
@@ -54,7 +54,18 @@ function showHelp(){
  * @param \com_jjcbs\lib\CommondParse $commondParse
  */
 function build(\com_jjcbs\lib\CommondParse $commondParse){
-
+    try{
+        $fileName = $commondParse->getParamList()[0];
+        $config = \com_jjcbs\lib\ServiceFactory::getInstance(\com_jjcbs\service\AnnotationConfigServiceImpl::class);
+        if ( !file_exists($fileName)) throw new Exception($fileName . 'not exists');
+        $fileConfig = eval(str_replace('?>' , '' , str_replace('<?php' , '' , file_get_contents($fileName))));
+        $config->setConfig($fileConfig);
+        $fileDriver =  new \com_jjcbs\lib\drivers\AnnotationFileCacheDriverImpl();
+        $fileDriver->scanNamespacesFiles();
+        die('build succeed');
+    }catch (Exception $e){
+        die('build error file' . $e->getMessage() . $e->getTraceAsString());
+    }
 }
 
 /**
@@ -64,3 +75,5 @@ function build(\com_jjcbs\lib\CommondParse $commondParse){
 function clean(\com_jjcbs\lib\CommondParse $commondParse){
 
 }
+
+main($argv , $argc);

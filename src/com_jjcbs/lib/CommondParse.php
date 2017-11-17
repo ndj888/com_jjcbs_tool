@@ -23,6 +23,7 @@ class CommondParse
     public function __construct(array $argv)
     {
         $this->argv = $argv;
+        $this->exec();
     }
 
     /**
