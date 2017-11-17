@@ -83,7 +83,7 @@ abstract class AnnotationCacheDriverAbstract implements AnnotationCacheInterface
     protected function namespaceCreateAllDir(string $namespace){
         if ( is_dir($namespace)) return;
         $dirList = explode('\\' , str_replace('/' , '\\' , $namespace));
-        $path = $this->annotationConfig->getConfig()['appPath'] . '/build/';
+        $path = $this->annotationConfig->getConfig()['buildPath'];
         foreach ($dirList as $k => $dir){
             $path .=  '/' . $dir;
             // if not existed create the dir
