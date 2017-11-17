@@ -12,6 +12,7 @@ namespace com_jjcbs\lib;
 use com_jjcbs\exceptions\AnnotationException;
 use com_jjcbs\fun\AnnotationFun;
 use com_jjcbs\interfaces\AnnotationMethodInterface;
+use com_jjcbs\service\AnnotationConfigServiceImpl;
 
 /**
  * Class AnnotationMethodAbstract
@@ -24,6 +25,7 @@ abstract class AnnotationMethodAbstract implements AnnotationMethodInterface
     protected static $param = [];
     protected static $input = '';
     protected static $body = ''; // body content
+    protected static $config = []; //config配置文件
 
     /**
      * @param string $input
@@ -42,6 +44,7 @@ abstract class AnnotationMethodAbstract implements AnnotationMethodInterface
         self::$argv = $argv;
         self::$param = $param;
         self::$body = $input;
+        self::$config = ServiceFactory::getInstance(AnnotationConfigServiceImpl::class)->getConfig();
 
         try{
             $funName = self::getMethodName();
