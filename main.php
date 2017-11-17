@@ -15,9 +15,10 @@
  */
 
 define('COM_JJCBS_ROOT_PATH' , dirname(__FILE__));
+if ( !defined('ROOT_PATH')) die('请定义根目录ROOT_PATH全局常量！');
 
 // load autoload file
-require 'vendor/autoload.php';
+require ROOT_PATH . '/vendor/autoload.php';
 /**
  * run main function
  * @param array $argv
