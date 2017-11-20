@@ -21,6 +21,9 @@ use com_jjcbs\service\AnnotationConfigServiceImpl;
 abstract class AnnotationMethodAbstract implements AnnotationMethodInterface
 {
     const DISABLE_SWITCH_NAME = 'disable';
+    const USE_TEMPLATE = '//{use template}';
+    const METHOD_TEMPLATE = '//{method template}';
+
     protected static $argv = [];
     protected static $param = [];
     protected static $input = '';
@@ -95,6 +98,16 @@ abstract class AnnotationMethodAbstract implements AnnotationMethodInterface
      */
     protected static function parseMethodExec($data = null){
         self::$input =  AnnotationFun::replaceMethodStr(self::$body , AnnotationFun::createClosure(self::$body , self::$argv['methodName'], $data) , self::$input);
+    }
+
+    protected static function useNamespace(string $namespace){
+        if ( strpos(self::$input , "use {$namespace}") === false){
+            str_replace(self::$input , self::USE_TEMPLATE , "use {$namespace};\n" . self::USE_TEMPLATE);
+        }
+    }
+
+    protected static function varMethodReplace(string $body){
+        self::$input = str_replace(self::METHOD_TEMPLATE , $body , self::$input);
     }
 
 }
