@@ -23,6 +23,7 @@ abstract class AnnotationMethodAbstract implements AnnotationMethodInterface
     const DISABLE_SWITCH_NAME = 'disable';
     const USE_TEMPLATE = '//{use template}';
     const METHOD_TEMPLATE = '//{method template}';
+    const CONSTRUCT_TEMPLATE = '//{construct template}';
 
     protected static $argv = [];
     protected static $param = [];
@@ -102,7 +103,7 @@ abstract class AnnotationMethodAbstract implements AnnotationMethodInterface
 
     protected static function useNamespace(string $namespace){
         if ( strpos(self::$input , "use {$namespace}") === false){
-            str_replace(self::$input , self::USE_TEMPLATE , "use {$namespace};\n" . self::USE_TEMPLATE);
+            self::$input = str_replace(self::USE_TEMPLATE , "use {$namespace};\n" . self::USE_TEMPLATE , self::$input);
         }
     }
 
