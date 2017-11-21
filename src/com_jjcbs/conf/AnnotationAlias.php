@@ -7,6 +7,7 @@
  * Time: 17:00
  */
 namespace com_jjcbs\conf;
+use com_jjcbs\lib\annotation\Autowired;
 use com_jjcbs\lib\annotation\OutPutFormat;
 use com_jjcbs\lib\annotation\Rpc;
 use com_jjcbs\lib\annotation\Service;
@@ -19,7 +20,8 @@ class AnnotationAlias extends Conf
         'alias' => [
             'Service' => Service::class,
             'Rpc' => Rpc::class,
-            'OutPutFormat' => OutPutFormat::class
+            'OutPutFormat' => OutPutFormat::class,
+            'Autowired' => Autowired::class
         ],
         // These annotations will be scanning
         'scanNamespace' => [

@@ -36,7 +36,7 @@ class OutPutFormat extends AnnotationMethodAbstract
     {
         // TODO: Implement parsedVar() method.
         $getterStr = AnnotationFun::createGetterByVar(self::$argv['varName'] , $data);
-        self::$input = str_replace('//{{annotation placeholder}}' , $getterStr , self::$input);
+        self::$input = str_replace(self::METHOD_TEMPLATE , $getterStr , self::$input);
     }
 
     static protected function do()
