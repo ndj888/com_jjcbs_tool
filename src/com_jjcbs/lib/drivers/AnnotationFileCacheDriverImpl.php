@@ -41,7 +41,9 @@ class AnnotationFileCacheDriverImpl extends AnnotationCacheDriverAbstract
                 $fptr = fopen( $this->namespaceToBuildPath($data['namespace']) . '/' . $data['className'] .  self::FILE_SUF , 'w');
             }
             $header = strpos($data['output'] , self::BUILD_MARK) === false ? self::LINE_HEAD . self::BUILD_MARK : self::LINE_HEAD;
-            fwrite($fptr , str_replace(self::LINE_HEAD , $header , $data['output']));
+            $out = str_replace(self::LINE_HEAD , $header , $data['output']);
+            $out = preg_replace('/@@.*/' , '' , $out);
+            fwrite($fptr , $out);
         }catch (\Exception $e){
             throw new AnnotationException('write class build file error : ' . $e->getMessage());
         }
