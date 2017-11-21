@@ -42,7 +42,7 @@ class AnnotationFileEncode
     public static function exec(): array
     {
         // read file to class var
-        self::$input = file_get_contents(self::$filePath);
+        self::$output = self::$input = file_get_contents(self::$filePath);
         // add arr type
         self::$arrInput = file(self::$filePath);
         $annotationService = ServiceFactory::getInstance(AnnotationServiceImpl::class);
@@ -59,8 +59,11 @@ class AnnotationFileEncode
         $default = ['output' => self::$input, 'namespace' => $data['namespace'], 'fileName' => self::$filePath, 'className' => $className];
         if (empty($data['classInfo']['annotation']['name']) && empty($data['varList']) && empty($data['methodList'])) return $default;
         !empty($data['classInfo']['annotation']['name']) and self::encodeClassInfo($data['classInfo']);
+        self::updateArrInput();
         !empty($data['varList']) && self::encodeVarList($data['varList']);
+        self::updateArrInput();
         !empty($data['methodList']) && self::encodeMethodList($data['methodList']);
+        self::updateArrInput();
         return [
             'output' => self::$output,
             'namespace' => $data['namespace'],
@@ -136,7 +139,7 @@ class AnnotationFileEncode
             $info['annotation']['name'],
             'setInput'
         ], [
-            'input' => self::$input
+            'input' => self::$output
         ]);
     }
 
@@ -150,5 +153,10 @@ class AnnotationFileEncode
         $config = ServiceFactory::getInstance(AnnotationConfigServiceImpl::class);
         $aliasArr = $config->getConfig()['alias'] ?? [];
         return array_key_exists($name, $aliasArr) ? $aliasArr[$name] : $name;
+    }
+
+    protected static function updateArrInput()
+    {
+        self::$arrInput = explode("\n", self::$output);
     }
 }
