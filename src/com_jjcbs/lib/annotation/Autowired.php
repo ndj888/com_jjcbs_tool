@@ -36,10 +36,12 @@ class Autowired extends AnnotationMethodAbstract
     {
         // TODO: Implement do() method.
         static::useNamespace('com_jjcbs\\lib\\ServiceFactory');
+        static::useNamespace(static::$param['type']);
         $tpl = <<<EOT
-        \$this->%s = ServiceFactory(%s);
+        \$this->%s = ServiceFactory::getInstance(%s::class);
 EOT;
-        return sprintf($tpl, static::$argv['varName'] , '\'' .static::$param['type'] . '\'');
+        $tempArr = explode('\\' , static::$param['type']);
+        return sprintf($tpl, static::$argv['varName'],$tempArr[count($tempArr)-1]);
     }
 
     static protected function exception(AnnotationException $exception)

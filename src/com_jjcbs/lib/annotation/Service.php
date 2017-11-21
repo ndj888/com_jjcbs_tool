@@ -36,7 +36,8 @@ class Service extends AnnotationMethodAbstract
     static protected function do()
     {
         // TODO: Implement do() method.
-        return 'class ' . self::$argv['className'] . ' extends \\com_jjcbs\\lib\\Service';
+        static::useNamespace('com_jjcbs\\lib\\Service');
+        return 'class ' . self::$argv['className'] . ' extends Service';
     }
 
     static protected function exception(AnnotationException $exception)
