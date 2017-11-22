@@ -157,6 +157,9 @@ class AnnotationFileEncode
 
     protected static function updateArrInput()
     {
-        self::$arrInput = explode("\n", self::$output);
+        self::$arrInput = explode("\r\n", self::$output);
+        foreach (self::$arrInput as $k => $v){
+           self::$arrInput[$k] = $v . "\r\n";
+        }
     }
 }
