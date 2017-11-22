@@ -42,7 +42,7 @@ class AnnotationFileCacheDriverImpl extends AnnotationCacheDriverAbstract
             }
             $header = strpos($data['output'] , self::BUILD_MARK) === false ? self::LINE_HEAD . self::BUILD_MARK : self::LINE_HEAD;
             $out =str_replace(self::LINE_HEAD , $header , $data['output']);
-            $out = preg_replace('/@@*/' , '' , $out);
+            $out = preg_replace('/^@@*/' , '' , $out);
             fwrite($fptr , $out);
         }catch (\Exception $e){
             throw new AnnotationException('write class build file error : ' . $e->getMessage());
