@@ -45,7 +45,7 @@ class Cache extends AnnotationMethodAbstract
         }
         \$arr = \$fun();
         \$cacheDriver->set('%s' , \$arr , %d);
-        return \$arr;
+        return \$arr
 EOT;
         return sprintf($tpl , $key , $key , self::$param['time'] ?? 0);
     }

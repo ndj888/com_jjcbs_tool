@@ -14,7 +14,7 @@ class TestCacheAnnotation
     //{method template}
 
     /**
-     * @@com_jjcbs\lib\annotation\OutPutFormat(type="json")
+     * @@com_jjcbs\lib\annotation\Cache(time=3600)
      * @return array
      */
     public function getData(){
