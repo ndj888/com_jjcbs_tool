@@ -29,22 +29,23 @@ class AnnotationFileCacheDriverImpl extends AnnotationCacheDriverAbstract
     public function write(array $data): bool
     {
         // TODO: Implement write() method.
-        try{
-            if ( empty($data['namespace'])){
+        try {
+            if (empty($data['namespace'])) {
                 // file build
                 $fileBuidPath = $this->fileToBuildPath($data['fileName']);
-                $this->createFileDir(preg_replace( '/\w+\.php/' , '' , $fileBuidPath));
-                $fptr = fopen( $fileBuidPath , 'w');
-            }else{
+                $this->createFileDir(preg_replace('/\w+\.php/', '', $fileBuidPath));
+                $fptr = fopen($fileBuidPath, 'w');
+            } else {
                 // namespace build
                 $this->namespaceCreateAllDir($data['namespace']);
-                $fptr = fopen( $this->namespaceToBuildPath($data['namespace']) . '/' . $data['className'] .  self::FILE_SUF , 'w');
+                $fptr = fopen($this->namespaceToBuildPath($data['namespace']) . '/' . $data['className'] . self::FILE_SUF, 'w');
             }
-            $header = strpos($data['output'] , self::BUILD_MARK) === false ? self::LINE_HEAD . self::BUILD_MARK : self::LINE_HEAD;
-            $out =str_replace(self::LINE_HEAD , $header , $data['output']);
-            $out = preg_replace('/@@[^\r|^\n]*/' , '' , $out);
-            fwrite($fptr , $out);
-        }catch (\Exception $e){
+            $header = strpos($data['output'], self::BUILD_MARK) === false ? self::LINE_HEAD . self::BUILD_MARK : self::LINE_HEAD;
+            $out = str_replace(self::LINE_HEAD, $header, $data['output']);
+            $out = str_replace("\r", "\r\n", preg_replace('/@@[^\r|^\n]*/', '', $out));
+            // CRLF
+            fwrite($fptr, $out);
+        } catch (\Exception $e) {
             throw new AnnotationException('write class build file error : ' . $e->getMessage());
         }
         return true;
