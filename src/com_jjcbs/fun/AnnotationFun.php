@@ -69,7 +69,7 @@ class AnnotationFun
 
     public static function replaceMethodStr(string $methodStr , string $replace , string $input){
         $str = preg_replace('/\{[^}]*\}/' , '{' . $replace . '}' , $methodStr);
-        return str_replace($methodStr , $str , $input);
+        return str_replace($methodStr , $str , str_replace("\n" , '' , $input));
     }
     /**
      * @param string $methodStr
