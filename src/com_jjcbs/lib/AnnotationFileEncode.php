@@ -79,7 +79,7 @@ class AnnotationFileEncode
      */
     protected static function encodeMethodList(array &$info)
     {
-        foreach ($info as $k => $method) {
+        foreach ($info as $k => &$method) {
             // alias parse
             $method['annotation']['name'] = self::aliasMapParse($method['annotation']['name']);
             self::setInput($method);
@@ -102,9 +102,9 @@ class AnnotationFileEncode
      */
     protected static function encodeVarList(array &$info)
     {
-        foreach ($info as $k => $var) {
+        foreach ($info as $k => &$var) {
             // alias parse
-            $info['annotation']['name'] = self::aliasMapParse($var['annotation']['name']);
+            $var['annotation']['name'] = self::aliasMapParse($var['annotation']['name']);
             self::setInput($var);
             $info[$k]['buildStr'] = forward_static_call_array([
                 $var['annotation']['name'],
