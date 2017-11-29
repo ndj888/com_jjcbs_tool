@@ -10,6 +10,7 @@ namespace com_jjcbs\lib\annotation;
 
 
 use com_jjcbs\exceptions\AnnotationException;
+use com_jjcbs\fun\Main;
 use com_jjcbs\lib\AnnotationMethodAbstract;
 use com_jjcbs\lib\ServiceFactory;
 use com_jjcbs\service\AnnotationServiceImpl;
@@ -49,7 +50,7 @@ class Autowired extends AnnotationMethodAbstract
         $tpl = <<<EOT
         \$this->%s = ServiceFactory::getInstance(%s::class);
 EOT;
-        return sprintf($tpl, static::$argv['varName'],$val);
+        return sprintf($tpl, static::$argv['varName'],Main::getShortName($val));
     }
 
     static protected function exception(AnnotationException $exception)
