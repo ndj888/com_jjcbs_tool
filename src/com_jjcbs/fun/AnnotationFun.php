@@ -26,15 +26,15 @@ class AnnotationFun
     public static function createClosure(string $methodStr , string $methodName , string $data = '') : string {
         if ( empty($data)){
             // no function body
-            return str_replace('}' , '};' , '$fun = ' . preg_replace('/public|static|protected|private|public static|protected static|private static/'
-                    , '' , str_replace($methodName , '' , $methodStr ))
+            return '$fun = ' . preg_replace('/public|static|protected|private|public static|protected static|private static/'
+                    , '' , str_replace($methodName , '' , $methodStr )
                 . "\n\n//exec\n"
-                . '$fun' . self::getMethodParamStr($methodStr) . ';');
+                . '$fun' . self::getMethodParamStr($methodStr));
         }else{
-            return str_replace('}' , '};' , '$fun = ' . preg_replace('/public|static|protected|private|public static|protected static|private static/'
-                    , '' , str_replace($methodName , '' , $methodStr ))
+            return '$fun = ' . preg_replace('/public|static|protected|private|public static|protected static|private static/'
+                    , '' , str_replace($methodName , '' , $methodStr )
                 . "\n\n//exec\n"
-                . sprintf($data , '$fun' . self::getMethodParamStr($methodStr) ). ';');
+                . sprintf($data , '$fun' . self::getMethodParamStr($methodStr) ));
         }
     }
 
