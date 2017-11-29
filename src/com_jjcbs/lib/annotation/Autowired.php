@@ -11,6 +11,8 @@ namespace com_jjcbs\lib\annotation;
 
 use com_jjcbs\exceptions\AnnotationException;
 use com_jjcbs\lib\AnnotationMethodAbstract;
+use com_jjcbs\lib\ServiceFactory;
+use com_jjcbs\service\AnnotationServiceImpl;
 
 class Autowired extends AnnotationMethodAbstract
 {
@@ -35,13 +37,19 @@ class Autowired extends AnnotationMethodAbstract
     static protected function do()
     {
         // TODO: Implement do() method.
+        $namespace = ServiceFactory::getInstance(AnnotationServiceImpl::class)->getSrcClass();
+        $reflectionClass = new \ReflectionClass($namespace);
+        $obj = $reflectionClass->newInstanceWithoutConstructor();
+        $property = $reflectionClass->getProperty(self::$argv['varName']);
+        $property->setAccessible(true);
+        $val = $property->getValue($obj);
+        if ( empty($val)) return '';
         static::useNamespace('com_jjcbs\\lib\\ServiceFactory');
-        static::useNamespace(static::$param['type']);
+        static::useNamespace($val);
         $tpl = <<<EOT
         \$this->%s = ServiceFactory::getInstance(%s::class);
 EOT;
-        $tempArr = explode('\\' , static::$param['type']);
-        return sprintf($tpl, static::$argv['varName'],$tempArr[count($tempArr)-1]);
+        return sprintf($tpl, static::$argv['varName'],$val);
     }
 
     static protected function exception(AnnotationException $exception)
