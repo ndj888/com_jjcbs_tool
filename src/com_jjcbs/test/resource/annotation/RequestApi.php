@@ -2,17 +2,17 @@
 /**
  * Created by JiangJiaCai.
  * User: Administrator
- * Date: 2017/11/22 0022
- * Time: 10:26
+ * Date: 2017/11/29 0029
+ * Time: 17:24
  */
 
-namespace com_jjcbs\lib\annotation;
+namespace com_jjcbs\test\resource\annotation;
 //{use template}
 
 use com_jjcbs\exceptions\AnnotationException;
 use com_jjcbs\lib\AnnotationMethodAbstract;
 
-class Cache extends AnnotationMethodAbstract
+class RequestApi extends AnnotationMethodAbstract
 {
     //{method template}
     static protected function parsedMethod($data = null)
@@ -36,18 +36,18 @@ class Cache extends AnnotationMethodAbstract
     static protected function do()
     {
         // TODO: Implement do() method.
-        static::useNamespace('\\think\\facade\\Cache');
-        $key = md5(self::$body);
-        $tpl = <<<EOT
-        ;\$cacheDriver = Cache::store('redis');
-        if (\$arr = \$cacheDriver->get('%s')){
-            return \$arr;
+        static::useNamespace('ext\\o2o\\ApiPath');
+        static::useNamespace('ext\\o2o\\RequestApi');
+        // 写接口配置
+        $tpl = <<<PHP
+        ;try{
+            \$data = RequestApi::request(ApiPath::%s, \$request->param());
+        }catch (\Exception \$e){
+            return [];
         }
-        \$arr = \$fun();
-        \$cacheDriver->set('%s' , \$arr , %d);
-        return \$arr;
-EOT;
-        return sprintf($tpl , $key , $key , self::$param['time'] ?? 0);
+        return \$fun();
+PHP;
+        return sprintf($tpl, static::$param['name']);
     }
 
     static protected function exception(AnnotationException $exception)
