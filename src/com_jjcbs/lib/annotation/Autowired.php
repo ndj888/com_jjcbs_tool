@@ -47,9 +47,17 @@ class Autowired extends AnnotationMethodAbstract
         if ( empty($val)) return '';
         static::useNamespace('com_jjcbs\\lib\\ServiceFactory');
         static::useNamespace($val);
-        $tpl = <<<EOT
+        //check is service
+        if ( 'Service' == $reflectionClass->getParentClass()->getName() ) {
+            $tpl = <<<EOT
         \$this->%s = ServiceFactory::getInstance(%s::class);
 EOT;
+        }else{
+            $tpl = <<<PHP
+        \$this->%s = new %s();
+PHP;
+
+        }
         return sprintf($tpl, static::$argv['varName'],Main::getShortName($val));
     }
 
