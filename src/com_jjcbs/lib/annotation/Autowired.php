@@ -45,7 +45,6 @@ class Autowired extends AnnotationMethodAbstract
         $property->setAccessible(true);
         $val = $property->getValue($obj);
         if (empty($val)) return '';
-        static::useNamespace('com_jjcbs\\lib\\ServiceFactory');
         static::useNamespace($val);
         //check is service
         $ref = new \ReflectionClass($val);
@@ -54,6 +53,7 @@ class Autowired extends AnnotationMethodAbstract
 PHP;
         if ($parent = $ref->getParentClass()) {
             if ( $parent->getName() == 'service'){
+                static::useNamespace('com_jjcbs\\lib\\ServiceFactory');
                 $tpl = <<<EOT
         \$this->%s = ServiceFactory::getInstance(%s::class);
 EOT;
