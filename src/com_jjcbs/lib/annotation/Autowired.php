@@ -10,7 +10,10 @@ namespace com_jjcbs\lib\annotation;
 
 
 use com_jjcbs\exceptions\AnnotationException;
+use com_jjcbs\fun\Main;
 use com_jjcbs\lib\AnnotationMethodAbstract;
+use com_jjcbs\lib\ServiceFactory;
+use com_jjcbs\service\AnnotationServiceImpl;
 
 class Autowired extends AnnotationMethodAbstract
 {
@@ -35,13 +38,28 @@ class Autowired extends AnnotationMethodAbstract
     static protected function do()
     {
         // TODO: Implement do() method.
-        static::useNamespace('com_jjcbs\\lib\\ServiceFactory');
-        static::useNamespace(static::$param['type']);
-        $tpl = <<<EOT
+        $namespace = ServiceFactory::getInstance(AnnotationServiceImpl::class)->getSrcClass();
+        $reflectionClass = new \ReflectionClass($namespace);
+        $obj = $reflectionClass->newInstanceWithoutConstructor();
+        $property = $reflectionClass->getProperty(self::$argv['varName']);
+        $property->setAccessible(true);
+        $val = $property->getValue($obj);
+        if (empty($val)) return '';
+        static::useNamespace($val);
+        //check is service
+        $ref = new \ReflectionClass($val);
+        $tpl = <<<PHP
+        \$this->%s = new %s();
+PHP;
+        if ($parent = $ref->getParentClass()) {
+            if ( $parent->getName() == 'service'){
+                static::useNamespace('com_jjcbs\\lib\\ServiceFactory');
+                $tpl = <<<EOT
         \$this->%s = ServiceFactory::getInstance(%s::class);
 EOT;
-        $tempArr = explode('\\' , static::$param['type']);
-        return sprintf($tpl, static::$argv['varName'],$tempArr[count($tempArr)-1]);
+            }
+        }
+        return sprintf($tpl, static::$argv['varName'], Main::getShortName($val));
     }
 
     static protected function exception(AnnotationException $exception)

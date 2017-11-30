@@ -45,7 +45,7 @@ class OutPutFormat extends AnnotationMethodAbstract
         switch (self::$param['type']){
             case 'json':
                 if(isset(self::$argv['varName'])) return sprintf('return json_decode($this->%s , true);' , self::$argv['varName']);
-                if(isset(self::$argv['methodName'])) return 'return json_decode(%s , true);';
+                if(isset(self::$argv['methodName'])) return ';return json_decode(%s , true);';
                 break;
             default:break;
 

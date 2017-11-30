@@ -65,4 +65,13 @@ class Main
         return '';
     }
 
+    /**
+     * get short namespace name
+     * @param string $namespace
+     */
+    public static function getShortName(string $namespace){
+        $tempArr = explode('\\' , $namespace);
+        return $tempArr[count($tempArr)-1];
+    }
+
 }

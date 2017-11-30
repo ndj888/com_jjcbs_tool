@@ -10,13 +10,15 @@ namespace com_jjcbs\test\resource;
 
 //{use template}
 
+use com_jjcbs\service\AnnotationServiceImpl;
+
 class TestAutowired
 {
     /**
-     * @@com_jjcbs\lib\annotation\Autowired(type="com_jjcbs\service\AnnotationServiceImpl")
+     * @@com_jjcbs\lib\annotation\Autowired()
      * @var
      */
-    private $annotationService;
+    private $annotationService = AnnotationServiceImpl::class;
 
     public function __construct()
     {
