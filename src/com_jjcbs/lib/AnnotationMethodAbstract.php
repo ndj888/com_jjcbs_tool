@@ -111,4 +111,24 @@ abstract class AnnotationMethodAbstract implements AnnotationMethodInterface
         self::$input = str_replace(self::METHOD_TEMPLATE , $body , self::$input);
     }
 
+    /**
+     * 简易模版解析
+     * @param array $data
+     * @param string $tplName
+     * @param string $str
+     * @return string $str
+     */
+    protected static function tplParse($data = [], $tplName = '', $str = '')
+    {
+        $data = array_merge(static::$config['tplConf']['TPL_DATA'], $data);
+        if (empty($str)) {
+            $fileName = static::$config['tplConf']['TPL_DIR'] . $tplName;
+            $str = file_get_contents($fileName);
+        }
+        foreach ($data as $k => $v) {
+            $k = static::$config['tplConf']['TPL_SIGN_START'] . $k . static::$config['tplConf']['TPL_SIGN_END'];
+            $str = str_replace($k, $v, $str);
+        }
+        return $str;
+    }
 }
