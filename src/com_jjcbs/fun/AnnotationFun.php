@@ -93,4 +93,33 @@ class AnnotationFun
         }
         return '';
     }
+
+    /**
+     * 解析数组类型值
+     * @return array
+     * @param string $str
+     * 安卓:android|苹果:ios|全部:all
+     */
+    public static function arrayValueParse(string $str) : array {
+        $data = [];
+        $tempArr = explode('|' , $str);
+        foreach ($tempArr as $v){
+            $dataArr = explode(':' , $v);
+            $data[$dataArr[0]] = $dataArr[1];
+        }
+        return $data;
+    }
+
+    /**
+     * create dir by file
+     * @param $path
+     */
+    public static function createFileDir($path)
+    {
+        if (!file_exists($path)) {
+            self::createFileDir(dirname($path));
+            mkdir($path, 0777);
+        }
+    }
+
 }
