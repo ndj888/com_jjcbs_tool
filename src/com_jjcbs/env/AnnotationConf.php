@@ -20,5 +20,17 @@ return [
         "com_jjcbs\\lib" => "src/com_jjcbs/lib"
     ],
     'appPath' => COM_JJCBS_ROOT_PATH,
-    'buildPath' => COM_JJCBS_ROOT_PATH . '/build/'
+    'buildPath' => COM_JJCBS_ROOT_PATH . '/build/',
+    'testConf' => [
+        'testDir' =>'',
+        'testNamespace' => 'tests\cases'
+    ],
+    'tplConf' => [
+        //公共模板数据
+        'TPL_DATA' => [],
+        'TPL_SIGN_START' => '{{',
+        'TPL_SIGN_END' => '}}',
+        // tpl dir
+        'TPL_DIR' => ''
+    ]
 ];
