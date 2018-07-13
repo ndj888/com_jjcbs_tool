@@ -15,6 +15,11 @@ class TestRpc extends SimpleRpc
 {
     protected $name = '';
     protected $age = 0;
+    /**
+     * @var TestRpc
+     */
+    protected $testRpc;
+
 
     /**
      * @return string
@@ -51,6 +56,24 @@ class TestRpc extends SimpleRpc
         $this->age = $age;
         return $this;
     }
+
+    /**
+     * @return TestRpc
+     */
+    public function getTestRpc(): TestRpc
+    {
+        return $this->testRpc;
+    }
+
+    /**
+     * @param TestRpc $testRpc
+     */
+    public function setTestRpc(TestRpc $testRpc)
+    {
+        $this->testRpc = $testRpc;
+    }
+
+    
 
 
 }

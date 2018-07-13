@@ -42,6 +42,9 @@ abstract class RPC
         foreach ($props as $prop) {
             $name = $prop->getName();
             if (!is_null($this->$name)) {
+                if ( $this->$name instanceof RPC){
+                    $this->$name = $this->rpcDataParse($this->$name);
+                }
                 switch ($type) {
                     case 1:
                         $arr[$name] = $this->$name;
@@ -99,6 +102,10 @@ abstract class RPC
     {
         $this->rules = $rules;
         return $this;
+    }
+
+    private function rpcDataParse(RPC $rpc){
+        return $rpc->toArray();
     }
 
 

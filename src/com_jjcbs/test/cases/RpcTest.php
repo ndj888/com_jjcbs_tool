@@ -9,6 +9,7 @@
 namespace com_jjcbs\cases\test;
 
 
+use com_jjcbs\test\resource\TestRpc;
 use com_jjcbs\test\resource\UserRpc;
 use PHPUnit\Framework\TestCase;
 
@@ -29,5 +30,20 @@ class RpcTest extends TestCase
     public function testCheckRpcInfo(UserRpc $rpc){
         $this->assertEquals($rpc->getUserName() , '李世民');
         $this->assertEquals($rpc->toArray()['userName'] , '李世民');
+    }
+
+    public function testToArray(){
+        $testRpc = new TestRpc([
+            'name' => 'cenhanyangsb',
+            'age' => 15
+        ]);
+        $testRpc->setTestRpc(new TestRpc([
+            'name' => 'longbob',
+            'age' => 21
+        ]));
+        $arr = $testRpc->toArray();
+        $json = $testRpc->toJson();
+        $this->assertNotEmpty($arr['testRpc']);
+        $this->assertNotEmpty($json);
     }
 }
