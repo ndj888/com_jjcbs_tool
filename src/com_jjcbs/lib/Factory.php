@@ -39,7 +39,7 @@ abstract class Factory implements \com_jjcbs\interfaces\Factory
             if (!class_exists($name)) throw new \Exception('factory not found obj');
             $class = new \ReflectionClass($name);
             self::$objMap[$name] = $class->newInstanceArgs($params);
-            self::$objMap[$name]->setTool(static::tool());
+//            self::$objMap[$name]->setTool(static::tool());
         }
         return self::$objMap[$name];
     }
