@@ -15,7 +15,7 @@ namespace com_jjcbs\lib;
  */
 abstract class RPC
 {
-    private $rules = [];
+    protected $rules = [];
 
     public function __construct(array $data = [])
     {
@@ -38,24 +38,27 @@ abstract class RPC
     {
         $reflect = new \ReflectionClass($this);
         $arr = [];
-        $props = $reflect->getProperties( \ReflectionProperty::IS_PROTECTED);
+        $props = $reflect->getProperties(\ReflectionProperty::IS_PROTECTED);
+        $temp = null;
         foreach ($props as $prop) {
             $name = $prop->getName();
             if (!is_null($this->$name)) {
-                if ( $this->$name instanceof RPC){
-                    $this->$name = $this->rpcDataParse($this->$name);
+                if ($this->$name instanceof RPC) {
+                    $temp = $this->rpcDataParse($this->$name);
+                }else{
+                    $temp = $this->$name;
                 }
                 switch ($type) {
                     case 1:
-                        $arr[$name] = $this->$name;
+                        $arr[$name] = $temp;
                         break;
                     case 2:
-                        $arr[] = $this->$name;
+                        $arr[] = $temp;
                         break;
                     case 3:
                         array_push($arr, [
                             'Key' => $name,
-                            'Value' => $this->$name
+                            'Value' => $temp
                         ]);
                         break;
                     default:
@@ -104,10 +107,10 @@ abstract class RPC
         return $this;
     }
 
-    private function rpcDataParse(RPC $rpc){
+    private function rpcDataParse(RPC $rpc)
+    {
         return $rpc->toArray();
     }
-
 
 
 }
