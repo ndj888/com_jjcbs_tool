@@ -15,7 +15,7 @@ namespace com_jjcbs\lib;
  */
 abstract class RPC
 {
-    protected $rules = [];
+    public $rules = [];
 
     public function __construct(array $data = [])
     {
@@ -39,13 +39,17 @@ abstract class RPC
         $reflect = new \ReflectionClass($this);
         $arr = [];
         $props = $reflect->getProperties(\ReflectionProperty::IS_PROTECTED);
-        $temp = null;
         foreach ($props as $prop) {
+            $temp = [];
             $name = $prop->getName();
             if (!is_null($this->$name)) {
                 if ($this->$name instanceof RPC) {
                     $temp = $this->rpcDataParse($this->$name);
-                }else{
+                } else if ($this->$name instanceof ListBean) {
+                    foreach ($this->$name as $v) {
+                        array_push($temp, $v->toArray());
+                    }
+                } else {
                     $temp = $this->$name;
                 }
                 switch ($type) {

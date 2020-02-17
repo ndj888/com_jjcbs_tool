@@ -9,6 +9,7 @@
 namespace com_jjcbs\test\resource;
 
 
+use com_jjcbs\lib\ListBean;
 use com_jjcbs\lib\SimpleRpc;
 
 class TestRpc extends SimpleRpc
@@ -19,6 +20,28 @@ class TestRpc extends SimpleRpc
      * @var TestRpc
      */
     protected $testRpc;
+    /**
+     * @var ListBean
+     */
+    protected $userList;
+
+    /**
+     * @return ListBean
+     */
+    public function getUserList(): ListBean
+    {
+        return $this->userList;
+    }
+
+    /**
+     * @param ListBean $userList
+     */
+    public function setUserList(ListBean $userList)
+    {
+        $this->userList = $userList;
+    }
+
+
 
 
     /**

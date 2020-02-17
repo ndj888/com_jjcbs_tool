@@ -9,6 +9,7 @@
 namespace com_jjcbs\cases\test;
 
 
+use com_jjcbs\lib\ListBean;
 use com_jjcbs\test\resource\TestRpc;
 use com_jjcbs\test\resource\UserRpc;
 use PHPUnit\Framework\TestCase;
@@ -41,9 +42,21 @@ class RpcTest extends TestCase
             'name' => 'longbob',
             'age' => 21
         ]));
+        $testRpc->setUserList(new ListBean([
+            new UserRpc(   [
+                'userName' => 'wangkui',
+                'userAge' => 28
+            ]),
+            new UserRpc(            [
+                'userName' => 'lixuefeng',
+                'userAge' => 29
+            ])
+        ]));
         $arr = $testRpc->toArray();
         $json = $testRpc->toJson();
         $this->assertNotEmpty($arr['testRpc']);
+        $this->assertIsArray($arr['userList']);
+        $this->assertNotEmpty($arr['userList']);
         $this->assertNotEmpty($json);
     }
 }
